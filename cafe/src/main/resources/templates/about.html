@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="vi" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout}">
+<head>
+    <title layout:fragment="title">Về Chúng Tôi</title>
+
+    <style>
+        .img-beautiful {
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            transition: transform 0.3s ease;
+        }
+
+        .img-beautiful:hover {
+            transform: scale(1.02);
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+<div layout:fragment="content" class="container py-5">
+    <div class="text-center mb-5">
+        <h1 class="display-4 fw-bold">Câu Chuyện Của <span class="text-primary">Cái Tiệm Cà Phơ</span></h1>
+        <p class="lead">Nơi những câu chuyện bắt đầu bằng một ly cà phê, và kết thúc bằng những kỷ niệm đẹp.</p>
+    </div>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 mb-4 mb-md-0">
+            <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93" class="img-fluid rounded-4 shadow-lg img-beautiful" alt="Hình ảnh quán cà phê">
+        </div>
+        <div class="col-md-6">
+            <h2 class="fw-bold mb-3">Từ Một Ước Mơ Nhỏ...</h2>
+            <p>
+                Trong một căn phòng nhỏ giữa lòng thành phố, ý tưởng về <strong>Cái Tiệm Cà Phơ</strong> được ấp ủ từ những buổi tối dài trăn trở.<br><br>
+                Tôi luôn tin rằng, cà phê không chỉ đơn thuần là thức uống – nó là chất xúc tác gắn kết con người với nhau. Là hơi thở của những sáng chủ nhật, là tiếng cười giòn tan giữa những người bạn lâu ngày hội ngộ.
+            </p>
+            <p>
+                <strong>Cái Tiệm Cà Phơ</strong> mang theo mong muốn nhỏ bé ấy, từ chiếc bàn cũ kỹ đầu tiên cho đến không gian ấm áp bạn thấy hôm nay.
+            </p>
+        </div>
+    </div>
+
+    <div class="row align-items-center mb-5">
+        <div class="col-md-6 order-md-2 mb-4 mb-md-0">
+            <img src="https://th.bing.com/th/id/R.675f0425f4ce7a6e59a1e28757eaf56a?rik=95W9s6HFYInsHw&pid=ImgRaw&r=0" class="img-fluid rounded-4 shadow-lg img-beautiful" alt="Câu chuyện cà phê">
+        </div>
+        <div class="col-md-6 order-md-1">
+            <h2 class="fw-bold mb-3">...Đến Một Nơi Chứa Đầy Kỷ Niệm</h2>
+            <p>
+                Ở đây, mỗi bức tường, mỗi góc bàn đều lưu dấu một câu chuyện. Những vị khách đầu tiên, những bản nhạc acoustic vang vọng vào chiều mưa, những ly cà phê pha đậm – tất cả dần dần tạo nên một **ngôi nhà** thực thụ.
+            </p>
+            <p>
+                Nếu bạn đang tìm kiếm một nơi không vội vã, không ồn ào, chỉ cần một chỗ nhỏ để thả mình vào những suy nghĩ – **chúng tôi luôn ở đây**.
+            </p>
+        </div>
+    </div>
+
+    <div class="text-center my-5">
+        <h2 class="fw-bold">Chúng Tôi Ở Đây, Đợi Bạn Về Nhà.</h2>
+        <a href="https://www.facebook.com/duytrinhphan2609/" target="_blank" class="btn btn-outline-primary btn-lg mt-3">Liên Hệ Ông Chủ Quán</a>
+    </div>
+</div>
+</body>
+</html>

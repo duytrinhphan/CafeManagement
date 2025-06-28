@@ -1,0 +1,9 @@
+<div th:fragment="alerts" xmlns:th="http://www.w3.org/1999/xhtml">
+  <script th:if="${success != null}" th:inline="javascript">
+    showSuccess([[${success}]]);
+  </script>
+  <script th:if="${error != null}" th:inline="javascript">
+    showError([[${error}]]);
+  </script>
+</div>
+

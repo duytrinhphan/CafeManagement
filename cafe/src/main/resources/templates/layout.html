@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="vi"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<head>
+    <meta charset="UTF-8">
+    <title layout:title-pattern="$CONTENT_TITLE - Cafe Management">Cafe Management</title>
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" defer></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11" defer></script>
+
+    <!-- Optional JS utils -->
+    <script th:src="@{/js/alert-utils.js}" defer></script>
+</head>
+<body class="d-flex flex-column min-vh-100">
+
+<!-- Header -->
+<header class="bg-dark text-white shadow-sm py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        <h1 class="h4 mb-0">☕ Cái Tiệm Cà Phơ</h1>
+
+        <div class="d-flex align-items-center gap-3">
+            <div class="text-end">
+                <div class="fw-semibold" th:text="${user != null && user.username != null ? user.username : 'Guest'}">Tên đăng nhập</div>
+                <div class="text-muted small" th:text="${user != null && user.permission != null ? user.permission : 'Admin'}">Chức vụ</div>
+            </div>
+            <img th:src="${user != null && user.imageUrl != null ? user.imageUrl : '/images/default-avatar.png'}"
+                 class="rounded-circle border" alt="avatar" width="40" height="40">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit" class="btn btn-sm btn-danger">Đăng xuất</button>
+            </form>
+        </div>
+    </div>
+</header>
+
+<!-- Layout: Sidebar + Content -->
+<div class="d-flex flex-grow-1" style="min-height: 0;">
+    <!-- Sidebar -->
+    <aside class="bg-light border-end p-3" style="width: 250px;">
+        <nav class="nav flex-column">
+            <a th:href="@{/home}" class="nav-link" th:classappend="${currentPath == '/home'} ? 'fw-bold text-primary' : ''">🏠 Trang chủ</a>
+            <a th:if="${user != null}"
+               th:href="@{/account/profile/{id}(id=${user.id})}"
+               class="nav-link"
+               th:classappend="${currentPath == '/account'} ? 'fw-bold text-primary' : ''">
+                👤 Trang cá nhân
+            </a>
+            <a th:href="@{/table}" class="nav-link" th:classappend="${currentPath == '/table'} ? 'fw-bold text-primary' : ''">💵 Quản lý bán hàng</a>
+
+            <div th:if="${user.permission == 'ADMIN'}" class="mt-3">
+                <hr>
+                <strong class="text-uppercase small">Quản lý hệ thống</strong>
+
+                <div class="accordion mt-2" id="adminMenu">
+
+                    <!-- Quản lý nhân viên -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="employeeHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#employeeCollapse">
+                                👥 Nhân viên
+                            </button>
+                        </h2>
+                        <div id="employeeCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/employee}" class="d-block nav-link">Danh sách</a>
+                                <a th:href="@{/employee/new}" class="d-block nav-link">Thêm mới</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý thiết bị -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="equipmentHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#equipmentCollapse">
+                                🛠️ Thiết bị
+                            </button>
+                        </h2>
+                        <div id="equipmentCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/equipment}" class="d-block nav-link">Danh sách</a>
+                                <a th:href="@{/equipment/new}" class="d-block nav-link">Thêm mới</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý kho -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="inventoryHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#inventoryCollapse">
+                                📦 Kho hàng
+                            </button>
+                        </h2>
+                        <div id="inventoryCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/inventory}" class="d-block nav-link">Danh sách giao dịch</a>
+                                <a th:href="@{/inventory/import/create}" class="d-block nav-link">Nhập hàng</a>
+                                <a th:href="@{/inventory/export/create}" class="d-block nav-link">Xuất hàng</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý thực đơn -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="menuHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#menuCollapse">
+                                🍽️ Thực đơn
+                            </button>
+                        </h2>
+                        <div id="menuCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/menuItem}" class="d-block nav-link">Danh sách món</a>
+                                <a th:href="@{/menuItem/new}" class="d-block nav-link">Thêm món</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quản lý marketing -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="marketingHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#marketingCollapse">
+                                📢 Marketing
+                            </button>
+                        </h2>
+                        <div id="marketingCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/promotion}" class="d-block nav-link">Danh sách khuyến mãi</a>
+                                <a th:href="@{/promotion/new}" class="d-block nav-link">Thêm khuyến mãi</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ngân sách -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="budgetHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#budgetCollapse">
+                                📊 Ngân sách
+                            </button>
+                        </h2>
+                        <div id="budgetCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/budget}" class="d-block nav-link">Xem thu chi</a>
+                                <a th:href="@{/budget/create}" class="d-block nav-link">Thêm chi tiêu</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Dữ liệu -->
+                    <div class="accordion-item">
+                        <h2 class="accordion-header" id="dataHeading">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#dataCollapse">
+                                💾 Dữ liệu
+                            </button>
+                        </h2>
+                        <div id="dataCollapse" class="accordion-collapse collapse" data-bs-parent="#adminMenu">
+                            <div class="accordion-body ps-3">
+                                <a th:href="@{/data/backup}" class="d-block nav-link">Sao lưu</a>
+                                <a th:href="@{/data/restore}" class="d-block nav-link">Khôi phục</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Báo cáo & giới thiệu -->
+                    <a th:href="@{/report}" class="nav-link mt-2">📈 Thống kê</a>
+                    <a th:href="@{/about}" class="nav-link">ℹ️ Giới thiệu</a>
+                </div>
+            </div>
+        </nav>
+    </aside>
+
+    <!-- Nội dung chính -->
+    <main class="flex-grow-1 p-4 bg-light" layout:fragment="content">
+        <div class="text-center mt-5">
+            <h2 class="display-5 fw-bold text-dark" th:text="'Xin chào, ' + (${user} != null ? ${user.username} : 'Guest')">Xin chào</h2>
+            <p class="mt-3 text-muted">Chúc bạn một ngày làm việc hiệu quả và vui vẻ ☕✨</p>
+        </div>
+    </main>
+</div>
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3 mt-auto">
+    <p class="mb-0">2025 © Cafe Management | Junior Việt Trí Đạo</p>
+</footer>
+
+<!-- Alert component -->
+<div th:replace="~{/alert :: alerts}"></div>
+</body>
+</html>
